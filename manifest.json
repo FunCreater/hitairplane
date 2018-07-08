@@ -14,6 +14,7 @@
 		"bin-debug/fighter/Airplane.js",
 		"bin-debug/fighter/BgMap.js",
 		"bin-debug/fighter/Bullet.js",
+		"bin-debug/fighter/EnemyText.js",
 		"bin-debug/fighter/GameContainer.js",
 		"bin-debug/fighter/ScorePanel.js",
 		"bin-debug/utils/GameUtil.js"

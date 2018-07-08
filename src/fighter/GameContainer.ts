@@ -19,9 +19,9 @@ module fighter
         /**我的子弹*/
         private myBullets:fighter.Bullet[] = [];
         /**敌人的飞机*/
-        private enemyFighters:fighter.Airplane[] = [];
+        private enemyTexts:fighter.EnemyText[] = [];
         /**触发创建敌机的间隔*/
-        private enemyFightersTimer:egret.Timer = new egret.Timer(1000);
+        private enemyTextsTimer:egret.Timer = new egret.Timer(1000);
         /**敌人的子弹*/
         private enemyBullets:fighter.Bullet[] = [];
         /**成绩显示*/
@@ -39,13 +39,23 @@ module fighter
             this.removeEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
             this.createGameScene();
         }
+
+        private backg:egret.Shape;
+
         /**创建游戏场景*/
         private createGameScene():void{
+            this.backg = new egret.Shape();
+            this.backg.graphics.beginFill(0x23201b);
+            this. backg.graphics.drawRect(0,0,this.stage.stageWidth,this.stage.stageHeight);
+            this.backg.graphics.endFill();
+            this.addChild(this.backg);       
+
+
             this.stageW = this.stage.stageWidth;
             this.stageH = this.stage.stageHeight;
-            //创建可滚动的背景
-            this.bg = new fighter.BgMap();
-            this.addChild(this.bg);
+            // //创建可滚动的背景
+            // this.bg = new fighter.BgMap();
+            // this.addChild(this.bg);
             //开始按钮
             this.btnStart = fighter.createBitmapByName("bullet2_png");//开始按钮
             this.btnStart.x = (this.stageW-this.btnStart.width)/2;//居中定位
@@ -62,16 +72,18 @@ module fighter
             this.addChild(this.myFighter);
 
             this.scorePanel = new fighter.ScorePanel();
+
+               
         }
 
         /**游戏开始*/
         private gameStart():void{
             this.removeChild(this.btnStart);
-            this.bg.start();
+            // this.bg.start();
             
             this.myFighter.fire();//我的飞机开火
-            this.enemyFightersTimer.addEventListener(egret.TimerEvent.TIMER,this.createEnemyFighter,this);
-            this.enemyFightersTimer.start();
+            this.enemyTextsTimer.addEventListener(egret.TimerEvent.TIMER,this.createEnemyFighter,this);
+            this.enemyTextsTimer.start();
 
             this.addEventListener(egret.Event.ENTER_FRAME,this.gameViewUpdate,this);
 
@@ -81,13 +93,13 @@ module fighter
 
         /**创建敌机*/
         private createEnemyFighter(evt:egret.TimerEvent):void{
-            var enemyFighter:fighter.Airplane = fighter.Airplane.produce("plane2_png",1000);
+            var enemyFighter:fighter.EnemyText = fighter.EnemyText.produce("test",1000);
             enemyFighter.x = Math.random()*(this.stageW-enemyFighter.width);//随机坐标
             enemyFighter.y = -enemyFighter.height-Math.random()*300;//随机坐标
             enemyFighter.addEventListener("createBullet",this.createBulletHandler,this);
             enemyFighter.fire();
             this.addChildAt(enemyFighter,this.numChildren-1);
-            this.enemyFighters.push(enemyFighter);
+            this.enemyTexts.push(enemyFighter);
 
         }
 
@@ -99,7 +111,7 @@ module fighter
                     bullet = fighter.Bullet.produce("bullet_png");
                     bullet.x = i==0?(this.myFighter.x+10):(this.myFighter.x+this.myFighter.width-22);
                     bullet.y = this.myFighter.y+30;
-                    this.addChildAt(bullet,this.numChildren-1-this.enemyFighters.length);
+                    this.addChildAt(bullet,this.numChildren-1-this.enemyTexts.length);
                     this.myBullets.push(bullet);
                 }
             } else {
@@ -107,7 +119,7 @@ module fighter
                 bullet = fighter.Bullet.produce("bullet2_png");
                 bullet.x = theFighter.x+28;
                 bullet.y = theFighter.y+10;
-                this.addChildAt(bullet,this.numChildren-1-this.enemyFighters.length);
+                this.addChildAt(bullet,this.numChildren-1-this.enemyTexts.length);
                 this.enemyBullets.push(bullet);
             }
         }
@@ -136,16 +148,16 @@ module fighter
 
             }
             //敌人飞机运动
-            var theFighter:fighter.Airplane;
-            var enemyFighterCount:number = this.enemyFighters.length;
+            var theFighter:fighter.EnemyText;
+            var enemyFighterCount:number = this.enemyTexts.length;
             for(i = 0;i < enemyFighterCount;i++){
-                theFighter = this.enemyFighters[i];
+                theFighter = this.enemyTexts[i];
                 if(theFighter.y>this.stage.stageHeight){
                     this.removeChild(theFighter);
-                    Airplane.reclaim(theFighter);
+                    EnemyText.reclaim(theFighter);
                     theFighter.removeEventListener("createBullet",this.createBulletHandler,this);
                     theFighter.stopFire();
-                    this.enemyFighters.splice(i,1);
+                    this.enemyTexts.splice(i,1);
                     i--;
                     enemyFighterCount--;
                 }
@@ -185,18 +197,18 @@ module fighter
         private gameHitTest(){
             var i:number,j:number;
             var bullet:fighter.Bullet;
-            var theFighter:fighter.Airplane;
+            var theFighter:fighter.EnemyText;
             var myBulletsCount:number = this.myBullets.length;
-            var enemyFighterCount:number = this.enemyFighters.length;
+            var enemyFighterCount:number = this.enemyTexts.length;
             var enemyBulletsCount:number = this.enemyBullets.length;
             //将需消失的子弹和飞机记录
             var delBullets:fighter.Bullet[] = [];
-            var delFighters:fighter.Airplane[] = [];
+            var delFighters:fighter.EnemyText[] = [];
             //我的子弹可以消灭敌机
             for(i=0; i<myBulletsCount; ++i){
                 bullet = this.myBullets[i];
                 for(j=0; j<enemyFighterCount; ++j){
-                    theFighter = this.enemyFighters[j];
+                    theFighter = this.enemyTexts[j];
                     if(fighter.GameUtil.hitTest(theFighter,bullet)){
                         theFighter.blood -=2;
                         if(-1 == delBullets.indexOf(bullet))
@@ -217,7 +229,7 @@ module fighter
             }
             //敌机的撞击可以消灭我
             for(i = 0;i<enemyFighterCount; ++i){
-                theFighter = this.enemyFighters[i];
+                theFighter = this.enemyTexts[i];
                 if(fighter.GameUtil.hitTest(this.myFighter,theFighter)){
                     this.myFighter.blood -= 10;
                 }
@@ -240,21 +252,21 @@ module fighter
                     theFighter.stopFire();
                     theFighter.removeEventListener("createBullet",this.createBulletHandler,this);
                     this.removeChild(theFighter);
-                    this.enemyFighters.splice(this.enemyFighters.indexOf(theFighter),1);
-                    fighter.Airplane.reclaim(theFighter);
+                    this.enemyTexts.splice(this.enemyTexts.indexOf(theFighter),1);
+                    fighter.EnemyText.reclaim(theFighter);
                 }
             }
         }
 
         private gameStop(){
             this.addChild(this.btnStart);
-            this.bg.pause();
+            // this.bg.pause();
             this.removeEventListener(egret.Event.ENTER_FRAME,this.gameViewUpdate,this);
             this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,this.touchHandler,this);
             this.myFighter.stopFire();
             this.myFighter.removeEventListener("createBullet",this.createBulletHandler,this);
-            this.enemyFightersTimer.removeEventListener(egret.TimerEvent.TIMER,this.createEnemyFighter,this);
-            this.enemyFightersTimer.stop();
+            this.enemyTextsTimer.removeEventListener(egret.TimerEvent.TIMER,this.createEnemyFighter,this);
+            this.enemyTextsTimer.stop();
             //清理子弹
             var i:number = 0;
             var bullet:fighter.Bullet;
@@ -269,13 +281,13 @@ module fighter
                 fighter.Bullet.reclaim(bullet);
             }
             //清理飞机
-            var theFigher:fighter.Airplane;
-            while(this.enemyFighters.length > 0){
-                theFigher = this.enemyFighters.pop();
+            var theFigher:fighter.EnemyText;
+            while(this.enemyTexts.length > 0){
+                theFigher = this.enemyTexts.pop();
                 theFigher.stopFire();
                 theFigher.removeEventListener("createBullet",this.createBulletHandler,this);
                 this.removeChild(theFigher);
-                fighter.Airplane.reclaim(theFigher);
+                fighter.EnemyText.reclaim(theFigher);
             }
             //显示成绩
             this.scorePanel.showScore(this.myScore);
