@@ -1,45 +1,45 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,bullet_png,bullet2_png,plane_png,plane2_png,nier_jpg,bg_jpg",
+			"keys": "description_json,bullet_png,bullet2_png,plane2_png,nier_jpg,bg_jpg",
 			"name": "preload"
 		}
 	],
 	"resources": [
 		{
-			"name": "description_json",
+			"url": "config/description.json",
 			"type": "json",
-			"url": "config/description.json"
+			"name": "description_json"
 		},
 		{
-			"name": "bullet_png",
+			"url": "assets/bullet.png",
 			"type": "image",
-			"url": "assets/bullet.png"
+			"name": "bullet_png"
 		},
 		{
-			"name": "bullet2_png",
+			"url": "assets/bullet2.png",
 			"type": "image",
-			"url": "assets/bullet2.png"
+			"name": "bullet2_png"
 		},
 		{
-			"name": "plane_png",
+			"url": "assets/plane2.png",
 			"type": "image",
-			"url": "assets/plane.png"
+			"name": "plane2_png"
 		},
 		{
-			"name": "plane2_png",
+			"url": "assets/nier.jpg",
 			"type": "image",
-			"url": "assets/plane2.png"
+			"name": "nier_jpg"
 		},
 		{
-			"name": "nier_jpg",
+			"url": "assets/bg.jpg",
 			"type": "image",
-			"url": "assets/nier.jpg"
+			"name": "bg_jpg"
 		},
 		{
-			"name": "bg_jpg",
+			"url": "assets/plane.png",
 			"type": "image",
-			"url": "assets/bg.jpg"
+			"name": "plane_png"
 		}
 	]
 }

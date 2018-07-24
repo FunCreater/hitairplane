@@ -19,6 +19,8 @@ var fighter;
             _this.fireDelay = fireDelay;
             _this.bmp = new egret.Bitmap(texture);
             _this.textureName = textureName;
+            _this.bmp.width = 200 / 2;
+            _this.bmp.height = 300 / 2;
             _this.addChild(_this.bmp);
             _this.fireTimer = new egret.Timer(fireDelay);
             _this.fireTimer.addEventListener(egret.TimerEvent.TIMER, _this.createBullet, _this);

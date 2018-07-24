@@ -18,6 +18,8 @@ module fighter
             this.fireDelay = fireDelay;
             this.bmp = new egret.Bitmap(texture);
             this.textureName = textureName;
+            this.bmp.width = 200 / 2;
+            this.bmp.height = 300 / 2;
             this.addChild(this.bmp);
             this.fireTimer = new egret.Timer(fireDelay);
             this.fireTimer.addEventListener(egret.TimerEvent.TIMER,this.createBullet,this);

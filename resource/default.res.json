@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,bullet_png,bullet2_png,plane_png,plane2_png,nier_jpg,bg_jpg",
+			"keys": "description_json,plane_png,nier_jpg,bg_jpg,bullet3_png,bullet_png,bullet2_png,plane2_png",
 			"name": "preload"
 		}
 	],
@@ -10,6 +10,26 @@
 			"name": "description_json",
 			"type": "json",
 			"url": "config/description.json"
+		},
+		{
+			"name": "plane_png",
+			"type": "image",
+			"url": "assets/plane.png"
+		},
+		{
+			"name": "nier_jpg",
+			"type": "image",
+			"url": "assets/nier.jpg"
+		},
+		{
+			"name": "bg_jpg",
+			"type": "image",
+			"url": "assets/bg.jpg"
+		},
+		{
+			"name": "bullet3_png",
+			"type": "image",
+			"url": "assets/bullet3.png"
 		},
 		{
 			"name": "bullet_png",
@@ -22,24 +42,9 @@
 			"url": "assets/bullet2.png"
 		},
 		{
-			"name": "plane_png",
-			"type": "image",
-			"url": "assets/plane.png"
-		},
-		{
 			"name": "plane2_png",
 			"type": "image",
 			"url": "assets/plane2.png"
-		},
-		{
-			"name": "nier_jpg",
-			"type": "image",
-			"url": "assets/nier.jpg"
-		},
-		{
-			"name": "bg_jpg",
-			"type": "image",
-			"url": "assets/bg.jpg"
 		}
 	]
 }
