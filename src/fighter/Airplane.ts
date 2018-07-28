@@ -38,32 +38,33 @@ module fighter
         }
 
 
-        private static cacheDict:Object = {};
+        // private static cacheDict:Object = {};
         /**
         /**生产*/
-        public static produce(textureName:string,fireDelay:number):fighter.Airplane
-        {    
-            if(fighter.Airplane.cacheDict[textureName]==null)
-                fighter.Airplane.cacheDict[textureName] = [];
-            var dict:fighter.Airplane[] = fighter.Airplane.cacheDict[textureName];
-            var theFighter:fighter.Airplane;
-            if(dict.length>0) {
-                theFighter = dict.pop();
-            } else {
-                theFighter = new fighter.Airplane(RES.getRes(textureName),fireDelay,textureName);
-            }
-            theFighter.blood = 10;
-            return theFighter;
-        }
+        // public static produce(textureName:string,fireDelay:number):fighter.Airplane
+        // {    
+        //     if(fighter.Airplane.cacheDict[textureName]==null)
+        //         fighter.Airplane.cacheDict[textureName] = [];
+        //     var dict:fighter.Airplane[] = fighter.Airplane.cacheDict[textureName];
+        //     var theFighter:fighter.Airplane;
+        //     if(dict.length>0) {
+        //         theFighter = dict.pop();
+        //     } else {
+        //         theFighter = new fighter.Airplane(RES.getRes(textureName),fireDelay,textureName);
+        //     }
+        //     theFighter.blood = 10;
+        //     return theFighter;
+        // }
+
         /**回收*/
-        public static reclaim(theFighter:fighter.Airplane):void
-        {
-            var textureName: string = theFighter.textureName;
-            if(fighter.Airplane.cacheDict[textureName]==null)
-                fighter.Airplane.cacheDict[textureName] = [];
-            var dict:fighter.Airplane[] = fighter.Airplane.cacheDict[textureName];
-            if(dict.indexOf(theFighter)==-1)
-                dict.push(theFighter);
-        }
+        // public static reclaim(theFighter:fighter.Airplane):void
+        // {
+        //     var textureName: string = theFighter.textureName;
+        //     if(fighter.Airplane.cacheDict[textureName]==null)
+        //         fighter.Airplane.cacheDict[textureName] = [];
+        //     var dict:fighter.Airplane[] = fighter.Airplane.cacheDict[textureName];
+        //     if(dict.indexOf(theFighter)==-1)
+        //         dict.push(theFighter);
+        // }
     }
 }

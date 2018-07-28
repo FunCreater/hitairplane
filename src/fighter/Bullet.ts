@@ -34,6 +34,8 @@ module fighter
 
         public constructor(texture:egret.Texture) {
             super(texture);
+            this.anchorOffsetX = texture.textureWidth / 2;
+            this.anchorOffsetY = texture.textureHeight / 2;
         }
     }
 }

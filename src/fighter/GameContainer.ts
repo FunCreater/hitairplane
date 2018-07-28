@@ -12,6 +12,10 @@ module fighter
         private stageH:number;
         /**开始按钮*/
         private btnStart:egret.Bitmap;
+
+        /**重试按钮 */
+        private btnReStart:egret.Bitmap;
+
         /**可滚动背景*/
         private bg:fighter.BgMap;
         /**我的飞机*/
@@ -61,27 +65,21 @@ module fighter
             this.btnStart.x = (this.stageW-this.btnStart.width)/2;//居中定位
             this.btnStart.y = (this.stageH-this.btnStart.height)/2;//居中定位
             this.btnStart.touchEnabled = true;//开启触碰
-            //点击按钮开始游戏.下面再添加 gameStart 方法，记得要把这一行的注释取消掉哦。
             this.btnStart.addEventListener(egret.TouchEvent.TOUCH_TAP,this.gameStart,this);
             this.addChild(this.btnStart);
+
+            this.btnReStart = fighter.createBitmapByName("bullet_png");
+            this.btnReStart.x = this.stageW/2;//居中定位
+            this.btnReStart.y = this.stageH-this.btnReStart.height/2;//居中定位
+            this.btnReStart.touchEnabled = true;//开启触碰
+            this.btnReStart.addEventListener(egret.TouchEvent.TOUCH_TAP,this.gameReStart,this);
         
             //我的飞机
             this.myFighter = new fighter.Airplane(RES.getRes("plane2_png"),300,"plane2_png");
             this.myFighter.x = this.stageW / 2;
             this.myFighter.y = this.stageH - this.myFighter.height;
             this.myFighter.addEventListener("createBullet",this.createBulletHandler,this);
-            this.myFighter.anchorOffsetX = this.myFighter.width / 2;
-            this.myFighter.anchorOffsetY = this.myFighter.height / 2;
-            var bound:egret.Rectangle = this.myFighter.getBounds();
-           
             this.addChild(this.myFighter);
-
-            var testBound = new egret.Shape();
-            testBound.graphics.beginFill(0xffffff);
-            testBound.graphics.drawRect(this.myFighter.x,this.myFighter.y,this.myFighter.width,this.myFighter.height);
-            testBound.graphics.endFill();
-            this.addChild(testBound);
-
 
             this.scorePanel = new fighter.ScorePanel();
 
@@ -121,11 +119,11 @@ module fighter
         /**创建子弹(包括我的子弹和敌机的子弹)*/
         private createBulletHandler(evt:egret.Event):void{
             var bullet:fighter.Bullet;
+            var pos:number  = this.myFighter.x + this.myFighter.width / 2;
             if(evt.target==this.myFighter) {
                 for(var i:number=0;i<2;i++) {
                     bullet = fighter.Bullet.produce("bullet3_png");
-                    bullet.x = i==0?(this.myFighter.x+10):(this.myFighter.x+this.myFighter.width-22);
-                    bullet.x -= this.myFighter.width / 2;
+                    bullet.x = i==0?(pos-20):(pos+20);
                     bullet.y = this.myFighter.y - this.myFighter.height / 2 + 30;
                     this.addChildAt(bullet,this.numChildren-1-this.enemyTexts.length);
                     this.myBullets.push(bullet);
@@ -191,24 +189,12 @@ module fighter
                     i--;
                     enemyBulletsCount--;//数组长度已经改变
                 }
-
                 bullet.y += 8 * speedOffset;
-
             }
             this.gameHitTest();
         }
 
-        /**响应Touch*/
-        // private touchHandler(evt:egret.TouchEvent):void{
-        //     if(evt.type==egret.TouchEvent.TOUCH_MOVE)
-        //     {
-        //         var tx:number = evt.localX;
-        //         // tx = Math.max(0,tx);
-        //         // tx = Math.min(this.stageW-this.myFighter.width,tx);
-        //         this.myFighter.x = tx;
-        //         this.myFighter.y = evt.localY;
-        //     }
-        // }
+     
 
         private _touchStatus:boolean = false;              //当前触摸状态，按下时，值为true
         private _distance:egret.Point = new egret.Point(); //鼠标点击时，鼠标全局坐标与_bird的位置差
@@ -300,11 +286,16 @@ module fighter
             }
         }
 
+        private gameReStart(){
+            location.reload();
+        }
+        
+
+        /**游戏结束 */
         private gameStop(){
-            this.addChild(this.btnStart);
+            this.addChild(this.btnReStart);
             // this.bg.pause();
             this.removeEventListener(egret.Event.ENTER_FRAME,this.gameViewUpdate,this);
-            // this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,this.touchHandler,this);
             this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.mouseDown, this);
             this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_END, this.mouseUp, this);
             
@@ -325,6 +316,7 @@ module fighter
                 this.removeChild(bullet);
                 fighter.Bullet.reclaim(bullet);
             }
+            
             //清理飞机
             var theFigher:fighter.EnemyText;
             while(this.enemyTexts.length > 0){
@@ -334,6 +326,7 @@ module fighter
                 this.removeChild(theFigher);
                 fighter.EnemyText.reclaim(theFigher);
             }
+
             //显示成绩
             this.scorePanel.showScore(this.myScore);
             this.scorePanel.x = (this.stageW-this.scorePanel.width)/2;

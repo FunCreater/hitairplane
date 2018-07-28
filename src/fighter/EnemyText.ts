@@ -19,7 +19,7 @@ module fighter
             this.txt = new egret.TextField();
             this.txt.textAlign = "center";
             this.txt.textColor = 0xFFFFFF;
-            this.txt.size = 12;
+            this.txt.size = 14;
             this.txt.text = "测试";
             // this.txt.y = 60;
 

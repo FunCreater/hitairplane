@@ -22,6 +22,8 @@ module fighter
         var result:egret.Bitmap = new egret.Bitmap();
         var texture:egret.Texture = RES.getRes(name);
         result.texture = texture;
+        result.anchorOffsetX = texture.textureWidth / 2;
+        result.anchorOffsetY = texture.textureHeight / 2;
         return result;
     }
 
