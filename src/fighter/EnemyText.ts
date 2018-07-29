@@ -9,8 +9,8 @@ module fighter
         private fireDelay:number;
         /**定时射*/
         private fireTimer:egret.Timer;
-        /**飞机生命值*/
-        public blood:number = 10;
+        /**敌人生命值*/
+        public blood:number = 3;
         //可视为飞机类型名
         public textureName:string;
         public constructor(text:string,fireDelay:number) {
@@ -19,7 +19,7 @@ module fighter
             this.txt = new egret.TextField();
             this.txt.textAlign = "center";
             this.txt.textColor = 0xFFFFFF;
-            this.txt.size = 14;
+            this.txt.size = 24;
             this.txt.text = "测试";
             // this.txt.y = 60;
 

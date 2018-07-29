@@ -73,10 +73,11 @@ module fighter
             this.btnReStart.y = this.stageH-this.btnReStart.height/2;//居中定位
             this.btnReStart.touchEnabled = true;//开启触碰
             this.btnReStart.addEventListener(egret.TouchEvent.TOUCH_TAP,this.gameReStart,this);
+           
         
             //我的飞机
             this.myFighter = new fighter.Airplane(RES.getRes("plane2_png"),300,"plane2_png");
-            this.myFighter.x = this.stageW / 2;
+            this.myFighter.x = (this.stageW - this.myFighter.width)  / 2;
             this.myFighter.y = this.stageH - this.myFighter.height;
             this.myFighter.addEventListener("createBullet",this.createBulletHandler,this);
             this.addChild(this.myFighter);
@@ -93,6 +94,7 @@ module fighter
             
             this.myFighter.touchEnabled=true;
             this.myFighter.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.mouseDown, this);
+            this.myFighter.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
             this.myFighter.addEventListener(egret.TouchEvent.TOUCH_END, this.mouseUp, this);
 
             this.myFighter.fire();//我的飞机开火
@@ -123,15 +125,15 @@ module fighter
             if(evt.target==this.myFighter) {
                 for(var i:number=0;i<2;i++) {
                     bullet = fighter.Bullet.produce("bullet3_png");
-                    bullet.x = i==0?(pos-20):(pos+20);
-                    bullet.y = this.myFighter.y - this.myFighter.height / 2 + 30;
+                    bullet.x = i==0?(pos-40):(pos+40);
+                    bullet.y = this.myFighter.y;
                     this.addChildAt(bullet,this.numChildren-1-this.enemyTexts.length);
                     this.myBullets.push(bullet);
                 }
             } else {
                 var theFighter:fighter.Airplane = evt.target;
                 bullet = fighter.Bullet.produce("bullet2_png");
-                bullet.x = theFighter.x+28;
+                bullet.x = theFighter.x;
                 bullet.y = theFighter.y+10;
                 this.addChildAt(bullet,this.numChildren-1-this.enemyTexts.length);
                 this.enemyBullets.push(bullet);
@@ -203,7 +205,7 @@ module fighter
             this._touchStatus = true;
             this._distance.x = evt.stageX - this.myFighter.x;
             this._distance.y = evt.stageY - this.myFighter.y;
-            this.myFighter.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+            // this.myFighter.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
         }
 
         private mouseMove(evt:egret.TouchEvent){
@@ -216,7 +218,7 @@ module fighter
 
         private mouseUp(evt:egret.TouchEvent){
             this._touchStatus = false;
-            this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+            // this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
         }
 
 
@@ -296,7 +298,9 @@ module fighter
             this.addChild(this.btnReStart);
             // this.bg.pause();
             this.removeEventListener(egret.Event.ENTER_FRAME,this.gameViewUpdate,this);
+            
             this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.mouseDown, this);
+            this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
             this.myFighter.removeEventListener(egret.TouchEvent.TOUCH_END, this.mouseUp, this);
             
             this.myFighter.stopFire();
